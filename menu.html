@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flavourscape - Menu</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        let cart = [];
+
+        function addToCart(dish, price) {
+            // Add selected item to the cart
+            cart.push({ dish, price });
+            alert(`${dish} added to your cart!`);
+            updateCart();
+        }
+
+        function updateCart() {
+            // Update checkout section with cart details
+            const cartList = document.getElementById('cart-list');
+            cartList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += parseFloat(item.price);
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.dish} - $${item.price}`;
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.onclick = () => {
+                    removeFromCart(index);
+                };
+                listItem.appendChild(removeButton);
+                cartList.appendChild(listItem);
+            });
+
+            document.getElementById('total-price').textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(index) {
+            // Remove item from cart and update view
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+
+            const summary = cart.map(item => `${item.dish} - $${item.price}`).join('\n');
+            const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+
+            alert(`Order Summary:\n${summary}\n\nTotal: $${total.toFixed(2)}\n\nThank you for your order!`);
+            cart = []; // Clear the cart
+            updateCart();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Flavourscape</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="menu">
+        <div class="container">
+            <h2>Our Menu</h2>
+            <div class="menu-items">
+                <div class="menu-item">
+                    <img src="images/download (2).jpg" alt="Dish 1">
+                    <h3>Grilled Chicken</h3>
+                    <p>Juicy grilled chicken served with a side of fresh vegetables.</p>
+                    <span class="price">$12.99</span>
+                    <button onclick="addToCart('Grilled Chicken', 12.99)">Order Now</button>
+                </div>
+                <div class="menu-item">
+                    <img src="images/alfredopasta5.jpg" alt="Dish 2">
+                    <h3>Pasta Alfredo</h3>
+                    <p>Rich and creamy Alfredo sauce over fettuccine pasta.</p>
+                    <span class="price">$10.99</span>
+                    <button onclick="addToCart('Pasta Alfredo', 10.99)">Order Now</button>
+                </div>
+                <div class="menu-item">
+                    <img src="images/download (4).jpg" alt="Dish 3">
+                    <h3>Margherita Pizza</h3>
+                    <p>Classic pizza topped with fresh basil, mozzarella, and tomatoes.</p>
+                    <span class="price">$8.99</span>
+                    <button onclick="addToCart('Margherita Pizza', 8.99)">Order Now</button>
+                </div>
+                <div class="menu-item">
+                    <img src="images/download (5).jpg" alt="Dish 4">
+                    <h3>Caesar Salad</h3>
+                    <p>Crisp romaine lettuce with Parmesan, croutons, and Caesar dressing.</p>
+                    <span class="price">$7.99</span>
+                    <button onclick="addToCart('Caesar Salad', 7.99)">Order Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout">
+        <div class="container">
+            <h2>Checkout</h2>
+            <ul id="cart-list">
+                <!-- Cart items will be dynamically added here -->
+            </ul>
+            <p id="total-price">Total: $0.00</p>
+            <button onclick="checkout()">Checkout</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Flavourscape. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
